@@ -10,6 +10,7 @@ export const Default = (args) => {
       {...args}
       value={value}
       onChange={(val) => setValue(val)}
+      defaultValue={null}
     />
   );
 }

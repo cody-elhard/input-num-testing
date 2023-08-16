@@ -36,7 +36,6 @@ const CustomInputNumeric = ({
     if (positiveOnly && !isNaN(newValue)) {
       newValue = Math.abs(newValue);
     }
-    console.log('handleChange', newValue);
     onChange(toNumber(newValue));
   };
 
@@ -53,7 +52,11 @@ const CustomInputNumeric = ({
     let numericValue = event.target.value;
     // Remove any leading zeros
     numericValue = numericValue.replace(/^0+/, '');
-    onChange(toNumber(numericValue));
+    if (numericValue === '') {
+      onChange(defaultValue);
+    } else {
+      onChange(toNumber(numericValue));
+    }
   };
 
   const formattedValue = (value) => {
