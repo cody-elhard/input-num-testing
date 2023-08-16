@@ -64,6 +64,7 @@ const CustomInputNumeric = ({
       style: 'decimal',
       useGrouping: false,
       minimumFractionDigits: 0,
+      maximumFractionDigits: maxDecimalPlaces
     };
     if (prefix === '$') {
       options.style = 'currency';
