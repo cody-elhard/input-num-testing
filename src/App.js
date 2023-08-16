@@ -9,9 +9,12 @@ function App() {
   const inputNumericProps = {
     prefix: '$',
     integer: false,
+    disabled: false,
     value: value,
     negativeOnly: false,
     commaSeparator: true,
+    suffix: ' USD',
+    alwaysShowDecimals: true,
     onChange: (value) => {
       setValue(value);
     },

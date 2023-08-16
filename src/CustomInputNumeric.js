@@ -10,39 +10,57 @@ const CustomInputNumeric = ({
 
   const handleFocus = (e) => {
     setIsFocused(true);
-    // Highlight text on focus
+    // Highlight all text on focus
     e.target.select();
+  };
+
+  const rawValueCheckRules = () => {
+    if (!value) return defaultValue;
+    let newValue = value;
+
+    let options = {
+      style: 'decimal',
+      useGrouping: false,
+      minimumFractionDigits: minDecimalPlaces,
+      maximumFractionDigits: maxDecimalPlaces
+    }
+    if (integer) {
+      options.maximumFractionDigits = 0;
+      options.minimumFractionDigits = 0;
+    }
+    newValue = newValue.toLocaleString('en-US', options);
+    newValue = toNumber(newValue);
+    if (negativeOnly && !isNaN(newValue)) {
+      newValue = Math.abs(newValue) * -1;
+    }
+    if (positiveOnly && !isNaN(newValue)) {
+      newValue = Math.abs(newValue);
+    }
+    console.log('handleChange', newValue);
+    onChange(toNumber(newValue));
   };
 
   const handleBlur = () => {
     setIsFocused(false);
     if (isNaN(value)) {
       onChange(defaultValue);
+    } else {
+      rawValueCheckRules();
     }
   };
 
   const handleChange = (event) => {
-    let options = {
-      style: 'decimal',
-      useGrouping: false,
-    }
-    if (integer) {
-      options.maximumFractionDigits = 0;
-      options.minimumFractionDigits = 0;
-    }
-    let newValue = parseFloat(event.target.value);
-    newValue = newValue.toLocaleString('en-US', options);
-    newValue = toNumber(newValue);
-    if (negativeOnly && !isNaN(newValue) && newValue !== 0) {
-      newValue = newValue < 0 ? newValue : -1 * newValue;
-    }
-    onChange(toNumber(newValue));
+    let numericValue = event.target.value;
+    // Remove any leading zeros
+    numericValue = numericValue.replace(/^0+/, '');
+    onChange(toNumber(numericValue));
   };
 
   const formattedValue = (value) => {
     let options = {
       style: 'decimal',
-      useGrouping: false
+      useGrouping: false,
+      minimumFractionDigits: 0,
     };
     if (prefix === '$') {
       options.style = 'currency';
@@ -54,6 +72,9 @@ const CustomInputNumeric = ({
     if (integer) {
       options.maximumFractionDigits = 0;
       options.minimumFractionDigits = 0;
+    }
+    if (alwaysShowDecimals) {
+      options.minimumFractionDigits = minDecimalPlaces;
     }
     if (negativeOnly) {
       options.signDisplay = 'negative';
@@ -67,13 +88,14 @@ const CustomInputNumeric = ({
       // placeholder is used to display the formatted value
       // This allows us to maintain a seperation of concerns
       value={isFocused ? value : ''}
-      placeholder={isFocused ? '' : formattedValue(value)}
+      placeholder={isFocused ? '' : `${formattedValue(value)}${suffix}`}
 
       className="custom-input-numeric"
       type="number"
       onFocus={handleFocus}
       onBlur={handleBlur}
       onChange={handleChange}
+      disabled={disabled}
       style={{
         width: '500px',
         height: '100px',
