@@ -6,4 +6,4 @@
 - `npm run build-storybook -- -o docs`
 
 ### Live Demo
-- https://cody-elhard.github.io/input-num-testing/
+- https://cody-elhard.github.io/input-num-testing/docs/index.html
