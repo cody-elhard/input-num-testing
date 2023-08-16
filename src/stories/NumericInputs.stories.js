@@ -6,12 +6,20 @@ export const Default = (args) => {
   const [value, setValue] = useState(0);
 
   return (
-    <CustomInputNumeric
-      {...args}
-      value={value}
-      onChange={(val) => setValue(val)}
-      defaultValue={null}
-    />
+    <>
+      <CustomInputNumeric
+        {...args}
+        value={value}
+        onChange={(val) => setValue(val)}
+        defaultValue={null}
+      />
+
+      <br />
+
+      <p>
+        Internal value: {value}
+      </p>
+    </>
   );
 }
 
