@@ -82,14 +82,14 @@ const CustomInputNumeric = ({
     return Intl.NumberFormat('en-US', options).format(value);
   };
 
-  const sizeClass = this.props.size ? `form-control-${size}` : '';
+  const sizeClass = size ? `form-control-${size}` : '';
   return (
     <input
       // Value is used to store the "raw value", without formatting
       // placeholder is used to display the formatted value
       // This allows us to maintain a seperation of concerns
       value={isFocused ? value : ''}
-      placeholder={isFocused ? '' : `${formattedValue(value)}${suffix}`}
+      placeholder={isFocused ? '' : `${formattedValue(value)}${suffix || ''}`}
 
       className={`custom-input-numeric ${sizeClass}`}
       type="number"
